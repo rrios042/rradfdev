@@ -1,0 +1,35 @@
+{
+	"name": "SourceDataset_hx9",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "AzureBlobStorageRRRRR",
+			"type": "LinkedServiceReference"
+		},
+		"type": "AzureBlob",
+		"structure": [
+			{
+				"name": "Prop_0",
+				"type": "String"
+			},
+			{
+				"name": "Prop_1",
+				"type": "String"
+			}
+		],
+		"typeProperties": {
+			"format": {
+				"type": "TextFormat",
+				"columnDelimiter": ",",
+				"rowDelimiter": "",
+				"nullValue": "\\N",
+				"encodingName": null,
+				"treatEmptyAsNull": true,
+				"skipLineCount": 0,
+				"firstRowAsHeader": false
+			},
+			"fileName": "emp.txt",
+			"folderPath": "radflab/input"
+		}
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}

@@ -1,0 +1,24 @@
+{
+	"name": "DestinationDataset_hx9",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "AzureSqlDatabase1",
+			"type": "LinkedServiceReference"
+		},
+		"type": "AzureSqlTable",
+		"structure": [
+			{
+				"name": "prop0",
+				"type": "String"
+			},
+			{
+				"name": "prop1",
+				"type": "String"
+			}
+		],
+		"typeProperties": {
+			"tableName": "[dbo].[EmpADF]"
+		}
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}

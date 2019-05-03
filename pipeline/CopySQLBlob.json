@@ -1,0 +1,60 @@
+{
+	"name": "CopySQLBlob",
+	"properties": {
+		"activities": [
+			{
+				"name": "Copy_hx9",
+				"type": "Copy",
+				"policy": {
+					"timeout": "7.00:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [
+					{
+						"name": "Source",
+						"value": "radflab/input/emp.txt"
+					},
+					{
+						"name": "Destination",
+						"value": "[dbo].[EmpADF]"
+					}
+				],
+				"typeProperties": {
+					"source": {
+						"type": "BlobSource",
+						"recursive": true
+					},
+					"sink": {
+						"type": "SqlSink",
+						"writeBatchSize": 10000
+					},
+					"enableStaging": false,
+					"dataIntegrationUnits": 0,
+					"translator": {
+						"type": "TabularTranslator",
+						"columnMappings": {
+							"Prop_0": "prop0",
+							"Prop_1": "prop1"
+						}
+					}
+				},
+				"inputs": [
+					{
+						"referenceName": "SourceDataset_hx9",
+						"type": "DatasetReference"
+					}
+				],
+				"outputs": [
+					{
+						"referenceName": "DestinationDataset_hx9",
+						"type": "DatasetReference"
+					}
+				]
+			}
+		]
+	},
+	"type": "Microsoft.DataFactory/factories/pipelines"
+}
