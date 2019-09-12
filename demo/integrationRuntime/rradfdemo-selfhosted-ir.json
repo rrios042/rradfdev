@@ -1,0 +1,7 @@
+{
+	"name": "rradfdemo-selfhosted-ir",
+	"properties": {
+		"type": "SelfHosted",
+		"description": "Self-hosted IR"
+	}
+}
