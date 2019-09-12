@@ -1,0 +1,93 @@
+{
+	"name": "DataSource1",
+	"properties": {
+		"description": "Connect to your data source store.",
+		"linkedServiceName": {
+			"referenceName": "rradfdemoSqlServer",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "SqlServerTable",
+		"structure": [
+			{
+				"name": "SalesKey",
+				"type": "Int32"
+			},
+			{
+				"name": "DateKey",
+				"type": "DateTime"
+			},
+			{
+				"name": "channelKey",
+				"type": "Int32"
+			},
+			{
+				"name": "StoreKey",
+				"type": "Int32"
+			},
+			{
+				"name": "ProductKey",
+				"type": "Int32"
+			},
+			{
+				"name": "PromotionKey",
+				"type": "Int32"
+			},
+			{
+				"name": "CurrencyKey",
+				"type": "Int32"
+			},
+			{
+				"name": "UnitCost",
+				"type": "Decimal"
+			},
+			{
+				"name": "UnitPrice",
+				"type": "Decimal"
+			},
+			{
+				"name": "SalesQuantity",
+				"type": "Int32"
+			},
+			{
+				"name": "ReturnQuantity",
+				"type": "Int32"
+			},
+			{
+				"name": "ReturnAmount",
+				"type": "Decimal"
+			},
+			{
+				"name": "DiscountQuantity",
+				"type": "Int32"
+			},
+			{
+				"name": "DiscountAmount",
+				"type": "Decimal"
+			},
+			{
+				"name": "TotalCost",
+				"type": "Decimal"
+			},
+			{
+				"name": "SalesAmount",
+				"type": "Decimal"
+			},
+			{
+				"name": "ETLLoadID",
+				"type": "Int32"
+			},
+			{
+				"name": "LoadDate",
+				"type": "DateTime"
+			},
+			{
+				"name": "UpdateDate",
+				"type": "DateTime"
+			}
+		],
+		"typeProperties": {
+			"tableName": "[dbo].[FactSales]"
+		}
+	}
+}
