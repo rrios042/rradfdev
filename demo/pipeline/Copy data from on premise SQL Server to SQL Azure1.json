@@ -53,13 +53,13 @@
 				},
 				"inputs": [
 					{
-						"referenceName": "DataSource1",
+						"referenceName": "SQLServer",
 						"type": "DatasetReference"
 					}
 				],
 				"outputs": [
 					{
-						"referenceName": "DataDestination1",
+						"referenceName": "SQLDB",
 						"type": "DatasetReference"
 					}
 				]
