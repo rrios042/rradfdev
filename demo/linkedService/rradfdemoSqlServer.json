@@ -1,0 +1,16 @@
+{
+	"name": "rradfdemoSqlServer",
+	"type": "Microsoft.DataFactory/factories/linkedservices",
+	"properties": {
+		"annotations": [],
+		"type": "SqlServer",
+		"typeProperties": {
+			"connectionString": "integrated security=False;data source=MININT-H5TU0OD;initial catalog=ContosoRetailDW;user id=rrios",
+			"encryptedCredential": "eyJDcmVkZW50aWFsSWQiOiJlNDJmOTUzYS02NGVmLTQ1NWItYWJjNy0yOGVhM2ZmZDE3ZGIiLCJWZXJzaW9uIjoiMi4wIiwiQ2xhc3NUeXBlIjoiTWljcm9zb2Z0LkRhdGFQcm94eS5Db3JlLkludGVyU2VydmljZURhdGFDb250cmFjdC5DcmVkZW50aWFsU1UwNkNZMTQifQ=="
+		},
+		"connectVia": {
+			"referenceName": "rradfdemo-selfhosted-ir",
+			"type": "IntegrationRuntimeReference"
+		}
+	}
+}
