@@ -1,0 +1,278 @@
+{
+	"$schema": "http://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+	"contentVersion": "1.0.0.0",
+	"parameters": {
+		"factoryName": {
+			"type": "string",
+			"metadata": "Data Factory Name",
+			"defaultValue": "RRADFDemo"
+		}
+	},
+	"variables": {
+		"factoryId": "[concat('Microsoft.DataFactory/factories/', parameters('factoryName'))]"
+	},
+	"resources": [
+		{
+			"name": "[concat(parameters('factoryName'), '/IncrementalCopyPipeline')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"activities": [
+					{
+						"name": "IterateSQLTables",
+						"type": "ForEach",
+						"dependsOn": [],
+						"userProperties": [],
+						"typeProperties": {
+							"items": {
+								"value": "@pipeline().parameters.tableList",
+								"type": "Expression"
+							},
+							"activities": [
+								{
+									"name": "LookupOldWaterMarkActivity",
+									"type": "Lookup",
+									"dependsOn": [],
+									"policy": {
+										"timeout": "7.00:00:00",
+										"retry": 0,
+										"retryIntervalInSeconds": 30,
+										"secureOutput": false,
+										"secureInput": false
+									},
+									"userProperties": [],
+									"typeProperties": {
+										"source": {
+											"type": "AzureSqlSource",
+											"sqlReaderQuery": {
+												"value": "select * from watermarktable where TableName  =  '@{item().TABLE_NAME}'",
+												"type": "Expression"
+											}
+										},
+										"dataset": {
+											"referenceName": "WatermarkDataSet",
+											"type": "DatasetReference"
+										}
+									}
+								},
+								{
+									"name": "LookupNewWaterMarkActivity",
+									"type": "Lookup",
+									"dependsOn": [],
+									"policy": {
+										"timeout": "7.00:00:00",
+										"retry": 0,
+										"retryIntervalInSeconds": 30,
+										"secureOutput": false,
+										"secureInput": false
+									},
+									"userProperties": [],
+									"typeProperties": {
+										"source": {
+											"type": "SqlServerSource",
+											"sqlReaderQuery": {
+												"value": "select MAX(@{item().WaterMark_Column}) as NewWatermarkvalue from @{item().TABLE_NAME}",
+												"type": "Expression"
+											}
+										},
+										"dataset": {
+											"referenceName": "SourceDataset",
+											"type": "DatasetReference"
+										}
+									}
+								},
+								{
+									"name": "IncrementalCopyActivity",
+									"type": "Copy",
+									"dependsOn": [
+										{
+											"activity": "LookupOldWaterMarkActivity",
+											"dependencyConditions": [
+												"Succeeded"
+											]
+										},
+										{
+											"activity": "LookupNewWaterMarkActivity",
+											"dependencyConditions": [
+												"Succeeded"
+											]
+										}
+									],
+									"policy": {
+										"timeout": "7.00:00:00",
+										"retry": 0,
+										"retryIntervalInSeconds": 30,
+										"secureOutput": false,
+										"secureInput": false
+									},
+									"userProperties": [],
+									"typeProperties": {
+										"source": {
+											"type": "SqlServerSource",
+											"sqlReaderQuery": {
+												"value": "select * from @{item().TABLE_NAME} where @{item().WaterMark_Column} > '@{activity('LookupOldWaterMarkActivity').output.firstRow.WatermarkValue}' and @{item().WaterMark_Column} <= '@{activity('LookupNewWaterMarkActivity').output.firstRow.NewWatermarkvalue}'",
+												"type": "Expression"
+											}
+										},
+										"sink": {
+											"type": "AzureSqlSink",
+											"sqlWriterStoredProcedureName": {
+												"value": "@{item().StoredProcedureNameForMergeOperation}",
+												"type": "Expression"
+											},
+											"sqlWriterTableType": {
+												"value": "@{item().TableType}",
+												"type": "Expression"
+											}
+										},
+										"enableStaging": false
+									},
+									"inputs": [
+										{
+											"referenceName": "SourceDataset",
+											"type": "DatasetReference"
+										}
+									],
+									"outputs": [
+										{
+											"referenceName": "SinkDataset",
+											"type": "DatasetReference",
+											"parameters": {
+												"SinkTableName": "@{item().TABLE_NAME}"
+											}
+										}
+									]
+								},
+								{
+									"name": "StoredProceduretoWriteWatermarkActivity",
+									"type": "SqlServerStoredProcedure",
+									"dependsOn": [
+										{
+											"activity": "IncrementalCopyActivity",
+											"dependencyConditions": [
+												"Succeeded"
+											]
+										}
+									],
+									"policy": {
+										"timeout": "7.00:00:00",
+										"retry": 0,
+										"retryIntervalInSeconds": 30,
+										"secureOutput": false,
+										"secureInput": false
+									},
+									"userProperties": [],
+									"typeProperties": {
+										"storedProcedureName": "[[dbo].[usp_write_watermark]",
+										"storedProcedureParameters": {
+											"LastModifiedtime": {
+												"value": {
+													"value": "@{activity('LookupNewWaterMarkActivity').output.firstRow.NewWatermarkvalue}",
+													"type": "Expression"
+												},
+												"type": "DateTime"
+											},
+											"TableName": {
+												"value": {
+													"value": "@{activity('LookupOldWaterMarkActivity').output.firstRow.TableName}",
+													"type": "Expression"
+												},
+												"type": "String"
+											}
+										}
+									},
+									"linkedServiceName": {
+										"referenceName": "rradfdemoAzureSqlDatabase",
+										"type": "LinkedServiceReference"
+									}
+								}
+							]
+						}
+					}
+				],
+				"parameters": {
+					"tablelist": {
+						"type": "object"
+					}
+				},
+				"annotations": []
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/datasets/WatermarkDataSet')]",
+				"[concat(variables('factoryId'), '/datasets/SourceDataset')]",
+				"[concat(variables('factoryId'), '/datasets/SinkDataset')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/SinkDataset')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "rradfdemoAzureSqlDatabase",
+					"type": "LinkedServiceReference"
+				},
+				"parameters": {
+					"SinkTableName": {
+						"type": "string"
+					}
+				},
+				"annotations": [],
+				"type": "AzureSqlTable",
+				"schema": [],
+				"typeProperties": {
+					"schema": {
+						"value": "@dataset().SinkTableName",
+						"type": "Expression"
+					}
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/SourceDataset')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "rradfdemoSqlServer",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "SqlServerTable",
+				"schema": []
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/WatermarkDataSet')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "rradfdemoAzureSqlDatabase",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "AzureSqlTable",
+				"schema": [
+					{
+						"name": "TableName",
+						"type": "varchar"
+					},
+					{
+						"name": "WatermarkValue",
+						"type": "datetime",
+						"precision": 23,
+						"scale": 3
+					}
+				],
+				"typeProperties": {
+					"schema": "dbo",
+					"table": "watermarktable"
+				}
+			},
+			"dependsOn": []
+		}
+	]
+}

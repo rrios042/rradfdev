@@ -12,6 +12,10 @@
 			"metadata": "Integration Runtime Name",
 			"defaultValue": "rradfdemo-selfhosted-ir"
 		},
+		"AzureBlobStorage1_connectionString": {
+			"type": "secureString",
+			"metadata": "Secure string for 'connectionString' of 'AzureBlobStorage1'"
+		},
 		"rradfdemoAzureSqlDatabase_connectionString": {
 			"type": "secureString",
 			"metadata": "Secure string for 'connectionString' of 'rradfdemoAzureSqlDatabase'"
@@ -19,10 +23,6 @@
 		"rradfdemoSqlServer_connectionString": {
 			"type": "secureString",
 			"metadata": "Secure string for 'connectionString' of 'rradfdemoSqlServer'"
-		},
-		"AzureBlobStorage1_connectionString": {
-			"type": "secureString",
-			"metadata": "Secure string for 'connectionString' of 'AzureBlobStorage1'"
 		},
 		"containerUri": {
 			"type": "string",
@@ -54,11 +54,11 @@
 					"integrationRuntime_rradfdemo-selfhosted-ir": {
 						"value": "[parameters('integrationRuntime_rradfdemo-selfhosted-ir')]"
 					},
-					"rradfdemoAzureSqlDatabase_connectionString": {
-						"value": "[parameters('rradfdemoAzureSqlDatabase_connectionString')]"
-					},
 					"AzureBlobStorage1_connectionString": {
 						"value": "[parameters('AzureBlobStorage1_connectionString')]"
+					},
+					"rradfdemoAzureSqlDatabase_connectionString": {
+						"value": "[parameters('rradfdemoAzureSqlDatabase_connectionString')]"
 					},
 					"rradfdemoSqlServer_connectionString": {
 						"value": "[parameters('rradfdemoSqlServer_connectionString')]"

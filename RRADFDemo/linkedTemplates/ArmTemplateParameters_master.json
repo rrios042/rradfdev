@@ -8,13 +8,13 @@
 		"integrationRuntime_rradfdemo-selfhosted-ir": {
 			"value": "rradfdemo-selfhosted-ir"
 		},
+		"AzureBlobStorage1_connectionString": {
+			"value": ""
+		},
 		"rradfdemoAzureSqlDatabase_connectionString": {
 			"value": ""
 		},
 		"rradfdemoSqlServer_connectionString": {
-			"value": ""
-		},
-		"AzureBlobStorage1_connectionString": {
 			"value": ""
 		},
 		"containerUri": {
