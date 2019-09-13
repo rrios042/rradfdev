@@ -1,0 +1,17 @@
+{
+	"name": "SinkDataset",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "rradfdemoAzureSqlDatabase",
+			"type": "LinkedServiceReference"
+		},
+		"parameters": {
+			"SinkTableName": {
+				"type": "string"
+			}
+		},
+		"annotations": [],
+		"type": "AzureSqlTable",
+		"schema": []
+	}
+}
