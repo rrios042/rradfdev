@@ -1,0 +1,310 @@
+{
+	"$schema": "http://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+	"contentVersion": "1.0.0.0",
+	"parameters": {
+		"factoryName": {
+			"type": "string",
+			"metadata": "Data Factory Name",
+			"defaultValue": "RRADFDemo"
+		}
+	},
+	"variables": {
+		"factoryId": "[concat('Microsoft.DataFactory/factories/', parameters('factoryName'))]"
+	},
+	"resources": [
+		{
+			"name": "[concat(parameters('factoryName'), '/Copy data from on premise SQL Server to SQL Azure1')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"description": "Copy data from on premise SQL Server to SQL Azure.\n\nYou can also go to \"Copy Data Tool\" to get the pipeline for more connectors and scenarios.",
+				"activities": [
+					{
+						"name": "SQL_to_SQLAzure",
+						"description": "Copy data from SQL server to SQL Azure",
+						"type": "Copy",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "7.00:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"source": {
+								"type": "SqlSource"
+							},
+							"sink": {
+								"type": "SqlSink",
+								"writeBatchSize": 10000
+							},
+							"enableStaging": false,
+							"dataIntegrationUnits": 0,
+							"translator": {
+								"type": "TabularTranslator",
+								"columnMappings": {
+									"SalesKey": "SalesKey",
+									"DateKey": "DateKey",
+									"channelKey": "channelKey",
+									"StoreKey": "StoreKey",
+									"ProductKey": "ProductKey",
+									"PromotionKey": "PromotionKey",
+									"CurrencyKey": "CurrencyKey",
+									"UnitCost": "UnitCost",
+									"UnitPrice": "UnitPrice",
+									"SalesQuantity": "SalesQuantity",
+									"ReturnQuantity": "ReturnQuantity",
+									"ReturnAmount": "ReturnAmount",
+									"DiscountQuantity": "DiscountQuantity",
+									"DiscountAmount": "DiscountAmount",
+									"TotalCost": "TotalCost",
+									"SalesAmount": "SalesAmount",
+									"ETLLoadID": "ETLLoadID",
+									"LoadDate": "LoadDate",
+									"UpdateDate": "UpdateDate"
+								}
+							}
+						},
+						"inputs": [
+							{
+								"referenceName": "SQLServer",
+								"type": "DatasetReference"
+							}
+						],
+						"outputs": [
+							{
+								"referenceName": "SQLDB",
+								"type": "DatasetReference"
+							}
+						]
+					}
+				],
+				"annotations": []
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/datasets/SQLServer')]",
+				"[concat(variables('factoryId'), '/datasets/SQLDB')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/SQLDB')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"description": "Connect to your data destination store.",
+				"linkedServiceName": {
+					"referenceName": "rradfdemoAzureSqlDatabase",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "AzureSqlTable",
+				"structure": [
+					{
+						"name": "SalesKey",
+						"type": "Int32"
+					},
+					{
+						"name": "DateKey",
+						"type": "DateTime"
+					},
+					{
+						"name": "channelKey",
+						"type": "Int32"
+					},
+					{
+						"name": "StoreKey",
+						"type": "Int32"
+					},
+					{
+						"name": "ProductKey",
+						"type": "Int32"
+					},
+					{
+						"name": "PromotionKey",
+						"type": "Int32"
+					},
+					{
+						"name": "CurrencyKey",
+						"type": "Int32"
+					},
+					{
+						"name": "UnitCost",
+						"type": "Decimal"
+					},
+					{
+						"name": "UnitPrice",
+						"type": "Decimal"
+					},
+					{
+						"name": "SalesQuantity",
+						"type": "Int32"
+					},
+					{
+						"name": "ReturnQuantity",
+						"type": "Int32"
+					},
+					{
+						"name": "ReturnAmount",
+						"type": "Decimal"
+					},
+					{
+						"name": "DiscountQuantity",
+						"type": "Int32"
+					},
+					{
+						"name": "DiscountAmount",
+						"type": "Decimal"
+					},
+					{
+						"name": "TotalCost",
+						"type": "Decimal"
+					},
+					{
+						"name": "SalesAmount",
+						"type": "Decimal"
+					},
+					{
+						"name": "ETLLoadID",
+						"type": "Int32"
+					},
+					{
+						"name": "LoadDate",
+						"type": "DateTime"
+					},
+					{
+						"name": "UpdateDate",
+						"type": "DateTime"
+					}
+				],
+				"typeProperties": {
+					"tableName": "[[dbo].[FactSales]"
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/SQLServer')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"description": "Connect to your data source store.",
+				"linkedServiceName": {
+					"referenceName": "rradfdemoSqlServer",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "SqlServerTable",
+				"structure": [
+					{
+						"name": "SalesKey",
+						"type": "Int32"
+					},
+					{
+						"name": "DateKey",
+						"type": "DateTime"
+					},
+					{
+						"name": "channelKey",
+						"type": "Int32"
+					},
+					{
+						"name": "StoreKey",
+						"type": "Int32"
+					},
+					{
+						"name": "ProductKey",
+						"type": "Int32"
+					},
+					{
+						"name": "PromotionKey",
+						"type": "Int32"
+					},
+					{
+						"name": "CurrencyKey",
+						"type": "Int32"
+					},
+					{
+						"name": "UnitCost",
+						"type": "Decimal"
+					},
+					{
+						"name": "UnitPrice",
+						"type": "Decimal"
+					},
+					{
+						"name": "SalesQuantity",
+						"type": "Int32"
+					},
+					{
+						"name": "ReturnQuantity",
+						"type": "Int32"
+					},
+					{
+						"name": "ReturnAmount",
+						"type": "Decimal"
+					},
+					{
+						"name": "DiscountQuantity",
+						"type": "Int32"
+					},
+					{
+						"name": "DiscountAmount",
+						"type": "Decimal"
+					},
+					{
+						"name": "TotalCost",
+						"type": "Decimal"
+					},
+					{
+						"name": "SalesAmount",
+						"type": "Decimal"
+					},
+					{
+						"name": "ETLLoadID",
+						"type": "Int32"
+					},
+					{
+						"name": "LoadDate",
+						"type": "DateTime"
+					},
+					{
+						"name": "UpdateDate",
+						"type": "DateTime"
+					}
+				],
+				"typeProperties": {
+					"tableName": "[[dbo].[FactSales]"
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/AzureSqlTable')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "rradfdemoAzureSqlDatabase",
+					"type": "LinkedServiceReference"
+				},
+				"parameters": {
+					"DBTableName": {
+						"type": "string"
+					}
+				},
+				"annotations": [],
+				"type": "AzureSqlTable",
+				"schema": [],
+				"typeProperties": {
+					"schema": {
+						"value": "@dataset().DBTableName",
+						"type": "Expression"
+					}
+				}
+			},
+			"dependsOn": []
+		}
+	]
+}
