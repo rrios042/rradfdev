@@ -4,13 +4,17 @@
 	"parameters": {
 		"factoryName": {
 			"type": "string",
-			"metadata": "Data Factory Name",
+			"metadata": "Data Factory name",
 			"defaultValue": "RRADFDemo"
 		},
 		"integrationRuntime_rradfdemo-selfhosted-ir": {
 			"type": "string",
-			"metadata": "Integration Runtime Name",
+			"metadata": "Integration runtime name",
 			"defaultValue": "rradfdemo-selfhosted-ir"
+		},
+		"AdventureWorks_connectionString": {
+			"type": "secureString",
+			"metadata": "Secure string for 'connectionString' of 'AdventureWorks'"
 		},
 		"AzureBlobStorage1_connectionString": {
 			"type": "secureString",
@@ -24,13 +28,21 @@
 			"type": "secureString",
 			"metadata": "Secure string for 'connectionString' of 'rradfdemoSqlServer'"
 		},
+		"rradlv2_accountKey": {
+			"type": "secureString",
+			"metadata": "Secure string for 'accountKey' of 'rradlv2'"
+		},
+		"rradlv2_properties_typeProperties_url": {
+			"type": "string",
+			"defaultValue": "https://rradls2.dfs.core.windows.net"
+		},
 		"containerUri": {
 			"type": "string",
 			"metadata": "URI to storage account containing linked ARM templates"
 		},
 		"containerSasToken": {
 			"type": "string",
-			"metadata": "Sas Token to storage account containing linked ARM templates"
+			"metadata": "Sas token to storage account containing linked ARM templates"
 		}
 	},
 	"variables": {
@@ -60,8 +72,17 @@
 					"rradfdemoAzureSqlDatabase_connectionString": {
 						"value": "[parameters('rradfdemoAzureSqlDatabase_connectionString')]"
 					},
+					"rradlv2_accountKey": {
+						"value": "[parameters('rradlv2_accountKey')]"
+					},
+					"AdventureWorks_connectionString": {
+						"value": "[parameters('AdventureWorks_connectionString')]"
+					},
 					"rradfdemoSqlServer_connectionString": {
 						"value": "[parameters('rradfdemoSqlServer_connectionString')]"
+					},
+					"rradlv2_properties_typeProperties_url": {
+						"value": "[parameters('rradlv2_properties_typeProperties_url')]"
 					}
 				}
 			},

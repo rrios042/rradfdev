@@ -8,6 +8,9 @@
 		"integrationRuntime_rradfdemo-selfhosted-ir": {
 			"value": "rradfdemo-selfhosted-ir"
 		},
+		"AdventureWorks_connectionString": {
+			"value": ""
+		},
 		"AzureBlobStorage1_connectionString": {
 			"value": ""
 		},
@@ -16,6 +19,12 @@
 		},
 		"rradfdemoSqlServer_connectionString": {
 			"value": ""
+		},
+		"rradlv2_accountKey": {
+			"value": ""
+		},
+		"rradlv2_properties_typeProperties_url": {
+			"value": "https://rradls2.dfs.core.windows.net"
 		}
 	}
 }
