@@ -3,7 +3,7 @@
 	"properties": {
 		"activities": [
 			{
-				"name": "ForEach_47b",
+				"name": "SQLServer2ADLV2",
 				"type": "ForEach",
 				"dependsOn": [],
 				"userProperties": [],
