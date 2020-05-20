@@ -7,11 +7,6 @@
 			"metadata": "Data Factory name",
 			"defaultValue": "RRADFDemo"
 		},
-		"integrationRuntime_rradfdemo-selfhosted-ir": {
-			"type": "string",
-			"metadata": "Integration runtime name",
-			"defaultValue": "rradfdemo-selfhosted-ir"
-		},
 		"AdventureWorks_connectionString": {
 			"type": "secureString",
 			"metadata": "Secure string for 'connectionString' of 'AdventureWorks'"
@@ -32,7 +27,23 @@
 			"type": "secureString",
 			"metadata": "Secure string for 'accountKey' of 'rradlv2'"
 		},
+		"ADLSGen2_accountKey": {
+			"type": "secureString",
+			"metadata": "Secure string for 'accountKey' of 'ADLSGen2'"
+		},
+		"AzureDataLakeStorage2_accountKey": {
+			"type": "secureString",
+			"metadata": "Secure string for 'accountKey' of 'AzureDataLakeStorage2'"
+		},
 		"rradlv2_properties_typeProperties_url": {
+			"type": "string",
+			"defaultValue": "https://rradls2.dfs.core.windows.net"
+		},
+		"ADLSGen2_properties_typeProperties_url": {
+			"type": "string",
+			"defaultValue": "https://rradls2.dfs.core.windows.net"
+		},
+		"AzureDataLakeStorage2_properties_typeProperties_url": {
 			"type": "string",
 			"defaultValue": "https://rradls2.dfs.core.windows.net"
 		},
@@ -63,9 +74,6 @@
 					"factoryName": {
 						"value": "[parameters('factoryName')]"
 					},
-					"integrationRuntime_rradfdemo-selfhosted-ir": {
-						"value": "[parameters('integrationRuntime_rradfdemo-selfhosted-ir')]"
-					},
 					"AzureBlobStorage1_connectionString": {
 						"value": "[parameters('AzureBlobStorage1_connectionString')]"
 					},
@@ -75,6 +83,12 @@
 					"rradlv2_accountKey": {
 						"value": "[parameters('rradlv2_accountKey')]"
 					},
+					"ADLSGen2_accountKey": {
+						"value": "[parameters('ADLSGen2_accountKey')]"
+					},
+					"AzureDataLakeStorage2_accountKey": {
+						"value": "[parameters('AzureDataLakeStorage2_accountKey')]"
+					},
 					"AdventureWorks_connectionString": {
 						"value": "[parameters('AdventureWorks_connectionString')]"
 					},
@@ -83,6 +97,12 @@
 					},
 					"rradlv2_properties_typeProperties_url": {
 						"value": "[parameters('rradlv2_properties_typeProperties_url')]"
+					},
+					"ADLSGen2_properties_typeProperties_url": {
+						"value": "[parameters('ADLSGen2_properties_typeProperties_url')]"
+					},
+					"AzureDataLakeStorage2_properties_typeProperties_url": {
+						"value": "[parameters('AzureDataLakeStorage2_properties_typeProperties_url')]"
 					}
 				}
 			},
